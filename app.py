@@ -13,16 +13,19 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "change-this-development-secret")
 
-
 def get_db():
     return mysql.connector.connect(
         host=os.getenv("DB_HOST", "localhost"),
         user=os.getenv("DB_USER", "root"),
         password=os.getenv("DB_PASSWORD", ""),
         database=os.getenv("DB_NAME", "eventease"),
-        port=int(os.getenv("DB_PORT", "3306"))
+        port=int(os.getenv("DB_PORT", "4000")),
+        ssl_ca=os.getenv(
+            "DB_SSL_CA",
+            os.path.join(os.path.dirname(__file__), "tidb-ca.pem")
+        ),
+        ssl_verify_cert=True
     )
-
 
 @app.before_request
 def csrf_protect():
