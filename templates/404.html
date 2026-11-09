@@ -1,0 +1,3 @@
+{% extends "base.html" %}
+{% block title %}Page not found{% endblock %}
+{% block content %}<section class="empty page-section"><div>404</div><h1>That page wandered off.</h1><p>Let's get you back to the events.</p><a class="button button-dark" href="{{ url_for('index') }}">Back home</a></section>{% endblock %}

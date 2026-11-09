@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+<section class="detail-wrap">
+  <a class="back-link" href="{{ url_for('index') }}">← Back to events</a>
+  <div class="detail-grid">
+    <div>
+      <div class="detail-cover" {% if event.image_url %}style="background-image:linear-gradient(180deg,transparent,#1118),url('{{ event.image_url }}')"{% endif %}><span class="category-tag">{{ event.category }}</span>{% if not event.image_url %}<span class="cover-symbol">✦</span>{% endif %}</div>
+      <span class="eyebrow">ABOUT THIS EXPERIENCE</span><h1 class="detail-title">{{ event.title }}</h1>
+      <p class="description">{{ event.description or "Come along and enjoy this special event with the EventEase community." }}</p>
+      <div class="detail-facts"><div><small>DATE & TIME</small><strong>{{ event.event_date.strftime('%A, %d %B %Y · %I:%M %p') }}</strong></div><div><small>VENUE</small><strong>{{ event.venue }}</strong></div><div><small>AVAILABLE TICKETS</small><strong>{{ event.seats_left }}</strong></div></div>
+    </div>
+    <aside class="booking-box"><span class="eyebrow">SAVE YOUR SPOT</span><h2>Book tickets</h2><p class="price-large">{% if event.price == 0 %}Free{% else %}₹{{ "%.2f"|format(event.price) }} <small>/ ticket</small>{% endif %}</p>
+      {% if event.seats_left > 0 %}
+      <form method="post" action="{{ url_for('book_event', event_id=event.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+        <label for="quantity">Number of tickets</label><input id="quantity" type="number" name="quantity" min="1" max="10" value="1" required>
+        {% if session.get('user_id') %}<button class="button button-dark full" type="submit">Confirm booking →</button>{% else %}<a class="button button-dark full" href="{{ url_for('login') }}">Log in to book →</a>{% endif %}
+      </form>
+      {% else %}<p class="sold-out">Sorry, this event is sold out.</p>{% endif %}
+      <p class="fine-print">Booking confirmation and ticket code will appear in My Bookings. This demo does not process online payments.</p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

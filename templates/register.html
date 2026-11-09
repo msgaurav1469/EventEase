@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<section class="auth-shell"><div class="auth-side"><span class="eyebrow">JOIN THE COMMUNITY</span><h1>Say yes to<br><em>something new.</em></h1><p>Create an account and start collecting moments, not just tickets.</p></div>
+<div class="form-card"><span class="eyebrow">GET STARTED</span><h2>Create account</h2><p class="muted">It only takes a minute.</p>
+<form method="post"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Full name</label><input type="text" name="name" maxlength="100" placeholder="Your name" required><label>Email address</label><input type="email" name="email" maxlength="150" placeholder="you@example.com" required><label>Password</label><input type="password" name="password" minlength="8" placeholder="At least 8 characters" required><button class="button button-dark full">Create account →</button></form>
+<p class="form-foot">Already registered? <a href="{{ url_for('login') }}">Log in</a></p></div></section>
+{% endblock %}

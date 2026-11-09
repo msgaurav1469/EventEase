@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}My bookings{% endblock %}
+{% block content %}
+<section class="section page-section"><span class="eyebrow">YOUR EVENT DIARY</span><h1 class="page-title">My bookings</h1><p class="muted">All your event plans, together in one place.</p>
+{% if bookings %}<div class="booking-list">{% for b in bookings %}<article class="booking-row"><div class="booking-icon">✦</div><div class="booking-main"><h3>{{ b.title }}</h3><p>{{ b.venue }} · {{ b.event_date.strftime('%d %b %Y, %I:%M %p') }}</p><small>Booking code: <strong>{{ b.booking_code }}</strong> · {{ b.quantity }} ticket(s)</small></div><div class="booking-status"><strong>₹{{ "%.2f"|format(b.total_amount) }}</strong><span class="status {{ b.status|lower }}">{{ b.status }}</span>{% if b.status == 'CONFIRMED' and b.event_date > now %}<form method="post" action="{{ url_for('cancel_booking', booking_id=b.id) }}" onsubmit="return confirm('Cancel this booking?')"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="cancel-button">Cancel booking</button></form>{% endif %}</div></article>{% endfor %}</div>{% else %}<div class="empty"><div>✦</div><h3>No bookings yet</h3><p>Find an event and book your first experience.</p><a class="button button-dark" href="{{ url_for('index') }}">Explore events</a></div>{% endif %}
+</section>
+{% endblock %}

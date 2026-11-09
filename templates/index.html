@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Discover events{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <span class="eyebrow">MAKE TIME FOR WHAT YOU LOVE</span>
+    <h1>Good times.<br><em>Great events.</em></h1>
+    <p>Discover experiences, meet your people, and book your next unforgettable day.</p>
+    <a class="button button-light" href="#events">Explore events <span>↘</span></a>
+  </div>
+  <div class="hero-art">
+    <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+    <div class="ticket-art"><span>✦</span><strong>YOUR<br>NEXT<br>MEMORY</strong><small>ADMIT ONE</small></div>
+    <div class="floating f-one">LIVE MUSIC ♫</div><div class="floating f-two">✳ GOOD VIBES</div>
+  </div>
+</section>
+<section class="section" id="events">
+  <div class="section-heading"><div><span class="eyebrow">WHAT'S HAPPENING</span><h2>Upcoming events</h2></div><span class="muted">{{ events|length }} event(s) to explore</span></div>
+  {% if events %}
+  <div class="event-grid">
+    {% for event in events %}
+    <article class="event-card">
+      <a class="event-image" href="{{ url_for('event_detail', event_id=event.id) }}" {% if event.image_url %}style="background-image:linear-gradient(180deg,transparent,#1115),url('{{ event.image_url }}')"{% endif %}>
+        <span class="category-tag">{{ event.category }}</span>
+        {% if not event.image_url %}<span class="image-symbol">✦</span>{% endif %}
+        <span class="image-date">{{ event.event_date.strftime('%d %b') }}</span>
+      </a>
+      <div class="event-info">
+        <h3><a href="{{ url_for('event_detail', event_id=event.id) }}">{{ event.title }}</a></h3>
+        <p>⌖ {{ event.venue }}</p>
+        <div class="card-bottom"><strong>{% if event.price == 0 %}Free{% else %}₹{{ "%.2f"|format(event.price) }}{% endif %}</strong><span>{{ event.seats_left }} seats left</span></div>
+        <a class="text-link" href="{{ url_for('event_detail', event_id=event.id) }}">View event <span>→</span></a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+    <div class="empty"><div>✦</div><h3>New experiences are on the way</h3><p>Check back soon for upcoming events.</p></div>
+  {% endif %}
+</section>
+<section class="banner"><div><span class="eyebrow">YOUR EVENT, YOUR MOMENT</span><h2>Make plans worth remembering.</h2></div><a class="button button-dark" href="{{ url_for('register') }}">Join EventEase ↗</a></section>
+{% endblock %}
